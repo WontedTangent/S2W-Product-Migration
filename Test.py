@@ -1,5 +1,7 @@
 import customtkinter as ctk
 from PIL import Image
+from pathlib import Path
+from tkinter import messagebox
 
 class MigrationApp(ctk.CTk):
     def __init__(self):
@@ -28,7 +30,8 @@ class MigrationApp(ctk.CTk):
 
         # Try to load logo
         try:
-            logo_img = Image.open("Assets/logo.png")  # make sure this file exists
+            assets_dir = Path(__file__).resolve().parent / "Assets"
+            logo_img = Image.open(assets_dir / "logo.png")
             self.logo_ctk = ctk.CTkImage(logo_img, size=(50, 50))
             ctk.CTkLabel(header, image=self.logo_ctk, text="", fg_color=self.color_primary).pack(side="left", padx=15)
         except Exception as e:
@@ -50,8 +53,6 @@ class MigrationApp(ctk.CTk):
             text_color="black",
         )
         self.tabs.pack(fill="both", expand=True, padx=10, pady=10)
-
-        self.tabs._segmented_button.configure(font=("Segoe UI", 14, "bold"), height=45)
 
         # Tabs
         self.cred_tab = self.tabs.add("🔑 Credentials")
@@ -90,8 +91,20 @@ class MigrationApp(ctk.CTk):
         btn_frame = ctk.CTkFrame(frame, fg_color="transparent")
         btn_frame.grid(row=len(fields)+1, column=0, columnspan=2, pady=30)
 
-        ctk.CTkButton(btn_frame, text="Test Shopify", fg_color=self.color_primary, hover_color=self.color_accent_teal).pack(side="left", padx=15)
-        ctk.CTkButton(btn_frame, text="Test WooCommerce", fg_color=self.color_muted_teal, hover_color=self.color_accent_teal).pack(side="left", padx=15)
+        ctk.CTkButton(
+            btn_frame,
+            text="Test Shopify",
+            fg_color=self.color_primary,
+            hover_color=self.color_accent_teal,
+            command=self.test_shopify_connection,
+        ).pack(side="left", padx=15)
+        ctk.CTkButton(
+            btn_frame,
+            text="Test WooCommerce",
+            fg_color=self.color_muted_teal,
+            hover_color=self.color_accent_teal,
+            command=self.test_woocommerce_connection,
+        ).pack(side="left", padx=15)
 
     def create_products_tab(self):
         frame = ctk.CTkFrame(self.prod_tab, fg_color="white", corner_radius=10)
@@ -100,8 +113,32 @@ class MigrationApp(ctk.CTk):
         ctk.CTkLabel(frame, text="Products Area",
                      font=("Segoe UI", 18, "bold"), text_color="black").pack(pady=20)
 
-        ctk.CTkButton(frame, text="Fetch Products", fg_color=self.color_primary, hover_color=self.color_accent_teal).pack(pady=10)
-        ctk.CTkButton(frame, text="Migrate Products", fg_color=self.color_muted_teal, hover_color=self.color_accent_teal).pack(pady=10)
+        ctk.CTkButton(
+            frame,
+            text="Fetch Products",
+            fg_color=self.color_primary,
+            hover_color=self.color_accent_teal,
+            command=self.fetch_products,
+        ).pack(pady=10)
+        ctk.CTkButton(
+            frame,
+            text="Migrate Products",
+            fg_color=self.color_muted_teal,
+            hover_color=self.color_accent_teal,
+            command=self.migrate_products,
+        ).pack(pady=10)
+
+    def test_shopify_connection(self):
+        messagebox.showinfo("Shopify Test", "Shopify connection test not implemented yet.")
+
+    def test_woocommerce_connection(self):
+        messagebox.showinfo("WooCommerce Test", "WooCommerce connection test not implemented yet.")
+
+    def fetch_products(self):
+        messagebox.showinfo("Fetch Products", "Product fetching is not implemented yet.")
+
+    def migrate_products(self):
+        messagebox.showinfo("Migrate Products", "Product migration is not implemented yet.")
 
     def create_help_tab(self):
         frame = ctk.CTkFrame(self.help_tab, fg_color="white", corner_radius=10)
